@@ -1,9 +1,14 @@
 import "./App.css";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Homepage from "./components/Homepage";
 
 function App() {
   return (
     <>
-      <h1 className="text-9xl">Flick Finder</h1>
+      <Header />
+      <Homepage />
+      <Footer />
     </>
   );
 }
