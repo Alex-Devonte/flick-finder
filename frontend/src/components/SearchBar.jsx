@@ -10,8 +10,10 @@ function SearchBar() {
   const handleChange = (e) => {
     setQuery(e.target.value);
   };
-  const handleSearch = (e) => {
-    navigate("/results");
+  const handleSearch = () => {
+    if (query.trim()) {
+      navigate(`/results?query=${encodeURIComponent(query)}`);
+    }
   };
 
   return (
