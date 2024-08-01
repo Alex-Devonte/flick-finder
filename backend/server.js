@@ -19,6 +19,7 @@ const schema = buildSchema(`
     name: String
     title: String
     poster_path: String
+    profile_path: String
     media_type: String
     release_date: String
   }
@@ -49,6 +50,7 @@ const root = {
         title: result.title, //Movies
         name: result.name, //Actors & Tv Shows
         poster_path: result.poster_path,
+        profile_path: result.profile_path,
         media_type: result.media_type,
         release_date: result.release_date,
       }));
