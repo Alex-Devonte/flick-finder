@@ -9,18 +9,22 @@ function SearchResults() {
   const MediaResult = ({ result }) => (
     <>
       <div className="flex-shrink-0">
-        <img
-          src={
-            result.poster_path
-              ? `${import.meta.env.VITE_IMAGE_BASE_URL}${result.poster_path}`
-              : import.meta.env.VITE_PLACEHOLDER_URL
-          }
-          alt={`${result.title || result.name} Poster`}
-          className="mr-5 h-40 object-cover"
-        />
+        <Link to={`/details/media/${result.id}`}>
+          <img
+            src={
+              result.poster_path
+                ? `${import.meta.env.VITE_IMAGE_BASE_URL}${result.poster_path}`
+                : import.meta.env.VITE_PLACEHOLDER_URL
+            }
+            alt={`${result.title || result.name} Poster`}
+            className="mr-5 h-40 object-cover"
+          />
+        </Link>
       </div>
       <div>
-        <Link className="font-bold">{result.name || result.title}</Link>
+        <Link className="font-bold" to={`/details/media/${result.id}`}>
+          {result.name || result.title}
+        </Link>
         <p className="mb-4 text-left italic">{result.release_date}</p>
       </div>
     </>
@@ -78,7 +82,10 @@ function SearchResults() {
               </li>
             ))}
             {(groupedResults.tv || []).map((result) => (
-              <li key={result.id} className="flex items-center border-b p-4">
+              <li
+                key={result.id}
+                className="flex items-center border-b p-4 md:flex-col md:justify-center"
+              >
                 <MediaResult result={result} />
               </li>
             ))}
@@ -90,28 +97,39 @@ function SearchResults() {
         <div>
           <h1 className="mb-6 text-7xl">People</h1>
           <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {groupedResults.person.map((result) => (
-              <li key={result.id} className="flex items-center border-b p-4">
+            {groupedResults.person.map((person) => (
+              <li key={person.id} className="flex items-center border-b p-4">
                 <div>
-                  <img
-                    src={
-                      result.profile_path
-                        ? `${import.meta.env.VITE_IMAGE_BASE_URL}${result.profile_path}`
-                        : import.meta.env.VITE_PLACEHOLDER_URL
-                    }
-                    alt={`${result.name} Photo`}
-                    className="mr-5 h-20 w-20 rounded-full object-cover"
-                  />
+                  <Link to={`/details/people/${person.id}`}>
+                    <img
+                      src={
+                        person.profile_path
+                          ? `${import.meta.env.VITE_IMAGE_BASE_URL}${person.profile_path}`
+                          : import.meta.env.VITE_PLACEHOLDER_URL
+                      }
+                      alt={`${person.name} Photo`}
+                      className="mr-5 h-20 w-20 rounded-full object-cover"
+                    />
+                  </Link>
                 </div>
                 <div>
-                  <Link className="text-2xl font-bold">{result.name}</Link>
+                  <Link
+                    className="text-2xl font-bold"
+                    to={`/details/people/${person.id}`}
+                  >
+                    {person.name}
+                  </Link>
                 </div>
                 <div>
-                  {result.known_for &&
-                    result.known_for.length > 0 &&
-                    result.known_for.map((media) => (
+                  {person.known_for &&
+                    person.known_for.length > 0 &&
+                    person.known_for.map((media) => (
                       <ul key={media.id}>
-                        <li>{media.title}</li>
+                        <li>
+                          <Link to={`/details/media/${media.id}`}>
+                            {media.title}
+                          </Link>
+                        </li>
                       </ul>
                     ))}
                 </div>
