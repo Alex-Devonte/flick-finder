@@ -36,6 +36,10 @@ function SearchResults() {
         profile_path
         media_type
         release_date
+        known_for {
+          id
+          title
+        }
       }
     }
   `;
@@ -101,6 +105,15 @@ function SearchResults() {
                 </div>
                 <div>
                   <Link className="text-2xl font-bold">{result.name}</Link>
+                </div>
+                <div>
+                  {result.known_for &&
+                    result.known_for.length > 0 &&
+                    result.known_for.map((media) => (
+                      <ul key={media.id}>
+                        <li>{media.title}</li>
+                      </ul>
+                    ))}
                 </div>
               </li>
             ))}
