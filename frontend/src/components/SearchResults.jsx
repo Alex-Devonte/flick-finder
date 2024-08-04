@@ -64,9 +64,12 @@ function SearchResults() {
       {(groupedResults.movie || groupedResults.tv) && (
         <div>
           <h1 className="mb-6 text-7xl">Movies & TV</h1>
-          <ul className="md:grid-col-2 grid gap-4 lg:grid-cols-4">
+          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {(groupedResults.movie || []).map((result) => (
-              <li key={result.id} className="flex items-center border-b p-4">
+              <li
+                key={result.id}
+                className="flex items-center border-b p-4 md:flex-col md:justify-center"
+              >
                 <MediaResult result={result} />
               </li>
             ))}
@@ -82,7 +85,7 @@ function SearchResults() {
       {groupedResults.person && (
         <div>
           <h1 className="mb-6 text-7xl">People</h1>
-          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {groupedResults.person.map((result) => (
               <li key={result.id} className="flex items-center border-b p-4">
                 <div>
