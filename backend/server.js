@@ -22,6 +22,12 @@ const schema = buildSchema(`
     profile_path: String
     media_type: String
     release_date: String
+    known_for: [KnownFor]
+  }
+
+  type KnownFor {
+    id: Int
+    title: String
   }
 `);
 
@@ -53,6 +59,12 @@ const root = {
         profile_path: result.profile_path,
         media_type: result.media_type,
         release_date: result.release_date,
+        known_for: result.known_for //Only retrieve id & title from array if available
+          ? result.known_for.map((item) => ({
+              id: item.id,
+              title: item.title || item.name,
+            }))
+          : [],
       }));
     } catch (error) {
       console.error("Error fetching data from TMDB:", error);
