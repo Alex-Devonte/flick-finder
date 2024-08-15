@@ -12,6 +12,8 @@ dotenv.config();
 const schema = buildSchema(`
   type Query {
     search(query: String!): [Results]
+    movie(id: Int!): Movie
+    tv(id: Int!): Tv
   }
 
   type Results {
@@ -25,6 +27,21 @@ const schema = buildSchema(`
     known_for: [KnownFor]
   }
 
+  type Movie {
+    id: Int
+    title: String
+    overview: String
+    poster_path: String
+    release_date: String
+  }
+
+  type Tv {
+    id: Int
+    name: String
+    overview: String
+    backdrop_path: String
+  }
+
   type KnownFor {
     id: Int
     title: String
@@ -36,7 +53,7 @@ const root = {
   search: async ({ query }) => {
     const options = {
       method: "GET",
-      url: `${process.env.TMDB_BASE_URL}query=${query}`,
+      url: `${process.env.TMDB_BASE_URL}search/multi?query=${query}`,
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${process.env.TMBD_API_Token}`,
@@ -71,6 +88,60 @@ const root = {
       throw new Error("Failed to fetch data from TMDB");
     }
   },
+  movie: async ({ id }) => {
+    const options = {
+      method: "GET",
+      url: `${process.env.TMDB_BASE_URL}/movie/${id}`,
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${process.env.TMBD_API_Token}`,
+      },
+    };
+    try {
+      console.log(`Getting data from movie with ID: ${id}`);
+      const response = await axios.request(options);
+      const movie = response.data;
+      console.log(movie);
+
+      return {
+        id: movie.id,
+        title: movie.title,
+        overview: movie.overview,
+        poster_path: movie.poster_path,
+        release_date: movie.release_data,
+      };
+    } catch (error) {
+      console.error("Error fetching data from TMDB:", error);
+      throw new Error("Failed to fetch data from TMDB");
+    }
+  },
+  tv: async ({id}) => {
+    const options = {
+      method: "GET",
+      url: `${process.env.TMDB_BASE_URL}/tv/${id}`,
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${process.env.TMBD_API_Token}`,
+      },
+    };
+    try {
+      console.log(`Getting data from show with ID: ${id}`);
+      const response = await axios.request(options);
+      const show = response.data;
+      console.log(show);
+
+      return {
+        id: show.id,
+        name: show.name,
+        overview: show.overview,
+        poster_path: show.poster_path,
+        release_date: show.release_data,
+      };
+    } catch (error) {
+      console.error("Error fetching data from TMDB:", error);
+      throw new Error("Failed to fetch data from TMDB");
+    }
+  }
 };
 
 const app = express();
