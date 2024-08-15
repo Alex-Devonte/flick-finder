@@ -9,7 +9,10 @@ function SearchResults() {
   const MediaResult = ({ result }) => (
     <>
       <div className="flex-shrink-0">
-        <Link to={`/details/media/${result.id}`}>
+        <Link
+          to={`/details/media/${result.id}`}
+          state={{ mediaType: result.media_type }}
+        >
           <img
             src={
               result.poster_path
@@ -22,7 +25,11 @@ function SearchResults() {
         </Link>
       </div>
       <div>
-        <Link className="font-bold" to={`/details/media/${result.id}`}>
+        <Link
+          className="font-bold"
+          to={`/details/media/${result.id}`}
+          state={{ mediaType: result.media_type }}
+        >
           {result.name || result.title}
         </Link>
         <p className="mb-4 text-left italic">{result.release_date}</p>
