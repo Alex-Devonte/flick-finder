@@ -108,7 +108,7 @@ const root = {
         title: movie.title,
         overview: movie.overview,
         poster_path: movie.poster_path,
-        release_date: movie.release_data,
+        release_date: movie.release_date,
       };
     } catch (error) {
       console.error("Error fetching data from TMDB:", error);
