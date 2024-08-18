@@ -31,21 +31,31 @@ const schema = buildSchema(`
     id: Int
     title: String
     overview: String
+    backdrop_path: String
     poster_path: String
     release_date: String
+    genres: [Genre]
   }
 
   type Tv {
     id: Int
     name: String
     overview: String
+    first_air_date: String
     backdrop_path: String
+    poster_path: String
+    genres: [Genre]
   }
 
   type KnownFor {
     id: Int
     title: String
   }
+
+  type Genre {
+    id: Int
+    name: String
+}
 `);
 
 // The root provides a resolver function for each API endpoint
@@ -107,15 +117,17 @@ const root = {
         id: movie.id,
         title: movie.title,
         overview: movie.overview,
+        backdrop_path: movie.backdrop_path,
         poster_path: movie.poster_path,
         release_date: movie.release_date,
+        genres: movie.genres,
       };
     } catch (error) {
       console.error("Error fetching data from TMDB:", error);
       throw new Error("Failed to fetch data from TMDB");
     }
   },
-  tv: async ({id}) => {
+  tv: async ({ id }) => {
     const options = {
       method: "GET",
       url: `${process.env.TMDB_BASE_URL}/tv/${id}`,
@@ -135,13 +147,15 @@ const root = {
         name: show.name,
         overview: show.overview,
         poster_path: show.poster_path,
-        release_date: show.release_data,
+        backdrop_path: show.backdrop_path,
+        first_air_date: show.first_air_date,
+        genres: show.genres,
       };
     } catch (error) {
       console.error("Error fetching data from TMDB:", error);
       throw new Error("Failed to fetch data from TMDB");
     }
-  }
+  },
 };
 
 const app = express();
