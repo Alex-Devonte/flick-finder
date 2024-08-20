@@ -35,6 +35,7 @@ const schema = buildSchema(`
     poster_path: String
     release_date: String
     genres: [Genre]
+    credits: Credits
   }
 
   type Tv {
@@ -45,6 +46,11 @@ const schema = buildSchema(`
     backdrop_path: String
     poster_path: String
     genres: [Genre]
+    credits: Credits
+  }
+
+  type Credits {
+    cast: [Cast]
   }
 
   type KnownFor {
@@ -55,7 +61,20 @@ const schema = buildSchema(`
   type Genre {
     id: Int
     name: String
-}
+  }
+
+  type Cast {
+    name: String
+    profile_path: String
+    character: String
+    roles: [Role]
+  }
+
+  type Role {
+    credit_id: String
+    character: String
+    episode_count: Int
+  }
 `);
 
 // The root provides a resolver function for each API endpoint
@@ -63,7 +82,7 @@ const root = {
   search: async ({ query }) => {
     const options = {
       method: "GET",
-      url: `${process.env.TMDB_BASE_URL}search/multi?query=${query}`,
+      url: `${process.env.TMDB_BASE_URL}/search/multi?query=${query}`,
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${process.env.TMBD_API_Token}`,
@@ -107,11 +126,26 @@ const root = {
         Authorization: `Bearer ${process.env.TMBD_API_Token}`,
       },
     };
+
+    //Fetch credits for the movie
+    const creditsOptions = {
+      ...options,
+      url: `${process.env.TMDB_BASE_URL}/movie/${id}/credits`,
+    };
+
     try {
       console.log(`Getting data from movie with ID: ${id}`);
       const response = await axios.request(options);
+      const creditsResponse = await axios.request(creditsOptions);
+
       const movie = response.data;
       console.log(movie);
+
+      const cast = creditsResponse.data.cast.map((person) => ({
+        name: person.name,
+        character: person.character,
+        profile_path: person.profile_path,
+      }));
 
       return {
         id: movie.id,
@@ -121,6 +155,7 @@ const root = {
         poster_path: movie.poster_path,
         release_date: movie.release_date,
         genres: movie.genres,
+        credits: { cast },
       };
     } catch (error) {
       console.error("Error fetching data from TMDB:", error);
@@ -136,11 +171,31 @@ const root = {
         Authorization: `Bearer ${process.env.TMBD_API_Token}`,
       },
     };
+
+    //Fetch credits for the TV Series
+    const creditsOptions = {
+      ...options,
+      url: `${process.env.TMDB_BASE_URL}/tv/${id}/aggregate_credits`,
+    };
+
     try {
       console.log(`Getting data from show with ID: ${id}`);
       const response = await axios.request(options);
+      const creditsResponse = await axios.request(creditsOptions);
+
       const show = response.data;
       console.log(show);
+
+      const cast = creditsResponse.data.cast.map((person) => ({
+        name: person.name,
+        character: person.character,
+        profile_path: person.profile_path,
+        roles: person.roles.map((role) => ({
+          credit_id: role.credit_id,
+          character: role.character,
+          episode_count: role.episode_count,
+        })),
+      }));
 
       return {
         id: show.id,
@@ -150,6 +205,7 @@ const root = {
         backdrop_path: show.backdrop_path,
         first_air_date: show.first_air_date,
         genres: show.genres,
+        credits: { cast },
       };
     } catch (error) {
       console.error("Error fetching data from TMDB:", error);
