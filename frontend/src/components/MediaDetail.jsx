@@ -21,6 +21,13 @@ function MediaDetail() {
           id
           name
         }
+        credits {
+          cast {
+            name
+            profile_path
+            character
+          }
+        }
       }
     }
   `;
@@ -38,6 +45,18 @@ function MediaDetail() {
           id
           name
         }
+        credits {
+          cast {
+            name
+            profile_path
+            character
+            roles {
+              credit_id
+              character
+              episode_count
+            }
+          }
+        }
       }
     }
   `;
@@ -48,6 +67,8 @@ function MediaDetail() {
       variables: { id: movieID },
     },
   );
+
+  console.log("RAW DATA: ", data);
 
   //Format data into a more manageable object to make it easier to display properties
   const formatData = (data, mediaType) => {
@@ -61,6 +82,7 @@ function MediaDetail() {
         overview: data.movie.overview,
         release_date: data.movie.release_date,
         genres: data.movie.genres,
+        credits: data.movie.credits,
       };
     } else {
       return {
@@ -70,6 +92,7 @@ function MediaDetail() {
         overview: data.tv.overview,
         release_date: data.tv.first_air_date,
         genres: data.tv.genres,
+        credits: data.tv.credits,
       };
     }
   };
