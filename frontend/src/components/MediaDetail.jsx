@@ -23,6 +23,7 @@ function MediaDetail() {
         }
         credits {
           cast {
+            id
             name
             profile_path
             character
@@ -47,6 +48,7 @@ function MediaDetail() {
         }
         credits {
           cast {
+            id
             name
             profile_path
             character

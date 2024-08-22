@@ -64,6 +64,7 @@ const schema = buildSchema(`
   }
 
   type Cast {
+    id: Int
     name: String
     profile_path: String
     character: String
@@ -142,6 +143,7 @@ const root = {
       console.log(movie);
 
       const cast = creditsResponse.data.cast.map((person) => ({
+        id: person.id,
         name: person.name,
         character: person.character,
         profile_path: person.profile_path,
@@ -187,6 +189,7 @@ const root = {
       console.log(show);
 
       const cast = creditsResponse.data.cast.map((person) => ({
+        id: person.id,
         name: person.name,
         character: person.character,
         profile_path: person.profile_path,
