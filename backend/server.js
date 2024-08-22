@@ -14,6 +14,7 @@ const schema = buildSchema(`
     search(query: String!): [Results]
     movie(id: Int!): Movie
     tv(id: Int!): Tv
+    actor(id: Int!): Actor
   }
 
   type Results {
@@ -47,6 +48,18 @@ const schema = buildSchema(`
     poster_path: String
     genres: [Genre]
     credits: Credits
+  }
+
+  type Actor {
+      id: Int
+      biography: String
+      birthday: String
+      deathday: String
+      gender: Int
+      known_for_department: String
+      name: String
+      place_of_birth: String
+      profile_path: String
   }
 
   type Credits {
@@ -209,6 +222,39 @@ const root = {
         first_air_date: show.first_air_date,
         genres: show.genres,
         credits: { cast },
+      };
+    } catch (error) {
+      console.error("Error fetching data from TMDB:", error);
+      throw new Error("Failed to fetch data from TMDB");
+    }
+  },
+  actor: async ({ id }) => {
+    const options = {
+      method: "GET",
+      url: `${process.env.TMDB_BASE_URL}/person/${id}`,
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${process.env.TMBD_API_Token}`,
+      },
+    };
+
+    try {
+      console.log(`Getting data from actor with ID: ${id}`);
+      const response = await axios.request(options);
+
+      const actor = response.data;
+      console.log(actor);
+
+      return {
+        id: actor.id,
+        biography: actor.biography,
+        birthday: actor.birthday,
+        deathday: actor.deathday,
+        gender: "Male" ? actor.gender === 2 : "Female",
+        known_for_department: actor.known_for_department,
+        name: actor.name,
+        place_of_birth: actor.place_of_birth,
+        profile_path: actor.profile_path,
       };
     } catch (error) {
       console.error("Error fetching data from TMDB:", error);
