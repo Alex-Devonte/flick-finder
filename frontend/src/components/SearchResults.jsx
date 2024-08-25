@@ -33,6 +33,7 @@ function SearchResults() {
           {result.name || result.title}
         </Link>
         <p className="mb-4 text-left italic">{result.release_date}</p>
+        <p>{result.overview}</p>
       </div>
     </>
   );
@@ -47,6 +48,7 @@ function SearchResults() {
         profile_path
         media_type
         release_date
+        overview
         known_for {
           id
           title
