@@ -110,7 +110,7 @@ function SearchResults() {
           <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {groupedResults.person.map((person) => (
               <li key={person.id}>
-                <div className="flex w-full items-center gap-10 rounded-md border-2 p-5">
+                <div className="flex w-full items-center gap-10 rounded-md border-2 p-5 md:h-44 md:gap-4">
                   <Link to={`/details/people/${person.id}`}>
                     <img
                       src={
