@@ -110,7 +110,7 @@ function SearchResults() {
           <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {groupedResults.person.map((person) => (
               <li key={person.id}>
-                <div className="flex w-full items-center gap-10 rounded-md border-2 p-5 md:h-44 md:gap-4">
+                <div className="flex w-full items-center gap-10 rounded-md border-2 p-5 md:h-44 md:gap-4 lg:justify-evenly">
                   <Link to={`/details/people/${person.id}`}>
                     <img
                       src={
@@ -135,7 +135,7 @@ function SearchResults() {
                         person.known_for.length > 0 &&
                         person.known_for.map((media) => (
                           <ul key={media.id}>
-                            <li>
+                            <li className="pt-2">
                               <Link to={`/details/media/${media.id}`}>
                                 {media.title}
                               </Link>
