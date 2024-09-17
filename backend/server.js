@@ -69,6 +69,7 @@ const schema = buildSchema(`
 
   type Credits {
     cast: [Cast]
+    crew: [Crew]
   }
 
   type KnownFor {
@@ -87,6 +88,11 @@ const schema = buildSchema(`
     profile_path: String
     character: String
     roles: [Role]
+  }
+
+  type Crew {
+    id: Int
+    name: String
   }
 
   type Role {
@@ -140,23 +146,16 @@ const root = {
   movie: async ({ id }) => {
     const options = {
       method: "GET",
-      url: `${process.env.TMDB_BASE_URL}/movie/${id}?append_to_response=release_dates`,
+      url: `${process.env.TMDB_BASE_URL}/movie/${id}?append_to_response=release_dates,credits`,
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${process.env.TMBD_API_Token}`,
       },
     };
 
-    //Fetch credits for the movie
-    const creditsOptions = {
-      ...options,
-      url: `${process.env.TMDB_BASE_URL}/movie/${id}/credits`,
-    };
-
     try {
       console.log(`Getting data from movie with ID: ${id}`);
       const response = await axios.request(options);
-      const creditsResponse = await axios.request(creditsOptions);
 
       const movie = response.data;
       console.log(movie);
@@ -175,12 +174,32 @@ const root = {
         rating = usRelease.release_dates[0].certification;
       }
 
-      const cast = creditsResponse.data.cast.map((person) => ({
+      const cast = response.data.credits.cast.slice(0, 10).map((person) => ({
         id: person.id,
         name: person.name,
         character: person.character,
         profile_path: person.profile_path,
       }));
+
+      const crewData = response.data.credits.crew;
+
+      //Get the director
+      const director = crewData.find((person) => person.job === "Director");
+
+      //Get the first 3 writers
+      const writers = crewData
+        .filter((person) => person.department === "Writing")
+        .slice(0, 3);
+
+      const crew = [];
+
+      if (director) {
+        crew.push({ id: director.id, name: director.name, role: "Director" });
+      }
+
+      writers.forEach((person) => {
+        crew.push({ id: person.id, name: person.name, role: "Writer" });
+      });
 
       return {
         id: movie.id,
@@ -193,7 +212,7 @@ const root = {
         tagline: movie.tagline,
         runtime: movie.runtime,
         genres: movie.genres,
-        credits: { cast },
+        credits: { cast, crew },
       };
     } catch (error) {
       console.error("Error fetching data from TMDB:", error);
@@ -203,23 +222,16 @@ const root = {
   tv: async ({ id }) => {
     const options = {
       method: "GET",
-      url: `${process.env.TMDB_BASE_URL}/tv/${id}?append_to_response=content_ratings`,
+      url: `${process.env.TMDB_BASE_URL}/tv/${id}?append_to_response=content_ratings,aggregate_credits`,
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${process.env.TMBD_API_Token}`,
       },
     };
 
-    //Fetch credits for the TV Series
-    const creditsOptions = {
-      ...options,
-      url: `${process.env.TMDB_BASE_URL}/tv/${id}/aggregate_credits`,
-    };
-
     try {
       console.log(`Getting data from show with ID: ${id}`);
       const response = await axios.request(options);
-      const creditsResponse = await axios.request(creditsOptions);
 
       const show = response.data;
       console.log(show);
@@ -236,17 +248,19 @@ const root = {
         rating = usContentRating.rating;
       }
 
-      const cast = creditsResponse.data.cast.map((person) => ({
-        id: person.id,
-        name: person.name,
-        character: person.character,
-        profile_path: person.profile_path,
-        roles: person.roles.map((role) => ({
-          credit_id: role.credit_id,
-          character: role.character,
-          episode_count: role.episode_count,
-        })),
-      }));
+      const cast = response.data.aggregate_credits.cast
+        .slice(0, 10) //Limit to 10 cast members
+        .map((person) => ({
+          id: person.id,
+          name: person.name,
+          character: person.character,
+          profile_path: person.profile_path,
+          roles: person.roles.map((role) => ({
+            credit_id: role.credit_id,
+            character: role.character,
+            episode_count: role.episode_count,
+          })),
+        }));
 
       return {
         id: show.id,
