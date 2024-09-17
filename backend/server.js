@@ -36,6 +36,9 @@ const schema = buildSchema(`
     backdrop_path: String
     poster_path: String
     release_date: String
+    rating: String
+    runtime: Int
+    tagline: String
     genres: [Genre]
     credits: Credits
   }
@@ -47,6 +50,7 @@ const schema = buildSchema(`
     first_air_date: String
     backdrop_path: String
     poster_path: String
+    rating: String
     genres: [Genre]
     credits: Credits
   }
@@ -136,7 +140,7 @@ const root = {
   movie: async ({ id }) => {
     const options = {
       method: "GET",
-      url: `${process.env.TMDB_BASE_URL}/movie/${id}`,
+      url: `${process.env.TMDB_BASE_URL}/movie/${id}?append_to_response=release_dates`,
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${process.env.TMBD_API_Token}`,
@@ -157,6 +161,20 @@ const root = {
       const movie = response.data;
       console.log(movie);
 
+      //Find US rating for movie
+      const releaseDates = movie.release_dates.results;
+
+      const usRelease = releaseDates.find(
+        (release) => release.iso_3166_1 === "US"
+      );
+
+      let rating = "";
+
+      if (usRelease) {
+        //Extract the certification from the first release date for the US
+        rating = usRelease.release_dates[0].certification;
+      }
+
       const cast = creditsResponse.data.cast.map((person) => ({
         id: person.id,
         name: person.name,
@@ -171,6 +189,9 @@ const root = {
         backdrop_path: movie.backdrop_path,
         poster_path: movie.poster_path,
         release_date: movie.release_date,
+        rating,
+        tagline: movie.tagline,
+        runtime: movie.runtime,
         genres: movie.genres,
         credits: { cast },
       };
@@ -182,7 +203,7 @@ const root = {
   tv: async ({ id }) => {
     const options = {
       method: "GET",
-      url: `${process.env.TMDB_BASE_URL}/tv/${id}`,
+      url: `${process.env.TMDB_BASE_URL}/tv/${id}?append_to_response=content_ratings`,
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${process.env.TMBD_API_Token}`,
@@ -203,6 +224,18 @@ const root = {
       const show = response.data;
       console.log(show);
 
+      //Extract US content rating
+      const contentRatings = show.content_ratings.results;
+      const usContentRating = contentRatings.find(
+        (rating) => rating.iso_3166_1 === "US"
+      );
+      let rating = "";
+
+      if (usContentRating) {
+        // Extract the content rating (certification) for the US
+        rating = usContentRating.rating;
+      }
+
       const cast = creditsResponse.data.cast.map((person) => ({
         id: person.id,
         name: person.name,
@@ -222,6 +255,7 @@ const root = {
         poster_path: show.poster_path,
         backdrop_path: show.backdrop_path,
         first_air_date: show.first_air_date,
+        rating,
         genres: show.genres,
         credits: { cast },
       };
