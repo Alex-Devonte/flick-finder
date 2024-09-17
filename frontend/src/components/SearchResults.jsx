@@ -16,7 +16,7 @@ function SearchResults() {
           <img
             src={
               result.poster_path
-                ? `${import.meta.env.VITE_IMAGE_BASE_URL}${result.poster_path}`
+                ? `${import.meta.env.VITE_IMAGE_BASE_URL}w500${result.poster_path}`
                 : import.meta.env.VITE_PLACEHOLDER_URL
             }
             alt={`${result.title || result.name} Poster`}
