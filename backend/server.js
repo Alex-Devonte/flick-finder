@@ -93,6 +93,7 @@ const schema = buildSchema(`
   type Crew {
     id: Int
     name: String
+    role: String
   }
 
   type Role {
