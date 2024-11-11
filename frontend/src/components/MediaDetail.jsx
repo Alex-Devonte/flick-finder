@@ -125,6 +125,9 @@ function MediaDetail() {
   };
 
   const convertRuntime = (runtime) => {
+    if (!runtime) {
+      return null;
+    }
     const hours = Math.floor(runtime / 60);
     const remainingMinutes = runtime % 60;
     return `${hours}h ${remainingMinutes}m`;
@@ -217,8 +220,12 @@ function MediaDetail() {
           </ul>
           <p className="text-black">{mediaData.tagline}</p>
           <p className="text-left text-lg text-black">{mediaData.overview}</p>
-          {/* Crew */}
-          {displayCrew(mediaData)}
+          {mediaData?.credits?.crew && (
+            <>
+              {/* Crew */}
+              {displayCrew(mediaData)}
+            </>
+          )}
         </div>
       </div>
 
