@@ -54,6 +54,7 @@ function SearchResults() {
         known_for {
           id
           title
+          media_type
         }
       }
     }
@@ -136,7 +137,10 @@ function SearchResults() {
                         person.known_for.map((media) => (
                           <ul key={media.id}>
                             <li className="pt-2">
-                              <Link to={`/details/media/${media.id}`}>
+                              <Link
+                                to={`/details/media/${media.id}`}
+                                state={{ mediaType: media.media_type }}
+                              >
                                 {media.title}
                               </Link>
                             </li>
