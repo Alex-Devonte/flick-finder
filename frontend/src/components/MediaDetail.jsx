@@ -124,6 +124,7 @@ function MediaDetail() {
         rating: data.tv.rating,
         genres: data.tv.genres,
         credits: data.tv.credits,
+        created_by: data.tv.created_by,
       };
     }
   };
@@ -187,6 +188,27 @@ function MediaDetail() {
     );
   };
 
+  const displayCreators = (mediaData) => {
+    const creators = mediaData.created_by || []; // Ensure creators is defined
+    console.log(creators);
+    return (
+      <div>
+        {creators.length > 0 && (
+          <>
+            <p>Creators: </p>
+            <ul className="inline p-2">
+              {creators.map((creator) => (
+                <li className="inline p-1" key={creator.id}>
+                  {creator.name}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+    );
+  };
+
   if (loading) return <p>Loading . . . </p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -224,6 +246,8 @@ function MediaDetail() {
           </ul>
           <p className="text-black">{mediaData.tagline}</p>
           <p className="text-left text-lg text-black">{mediaData.overview}</p>
+          {/* Render Creators if present */}
+          {mediaData?.created_by && <>{displayCreators(mediaData)}</>}
           {mediaData?.credits?.crew && (
             <>
               {/* Crew */}
