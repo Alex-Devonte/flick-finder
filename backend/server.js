@@ -53,6 +53,7 @@ const schema = buildSchema(`
     rating: String
     genres: [Genre]
     credits: Credits
+    created_by: [Creator]
   }
 
   type Actor {
@@ -100,6 +101,11 @@ const schema = buildSchema(`
     credit_id: String
     character: String
     episode_count: Int
+  }
+
+  type Creator { 
+    id: Int
+    name: String
   }
 `);
 
@@ -237,6 +243,17 @@ const root = {
       const show = response.data;
       console.log(show);
 
+      //Grab the creators if there are any
+      let creators = [];
+      const creatorDetails = show.created_by || [];
+
+      creatorDetails.forEach((creator) => {
+        creators.push({
+          id: creator.id,
+          name: creator.name,
+        });
+      });
+
       //Extract US content rating
       const contentRatings = show.content_ratings.results;
       const usContentRating = contentRatings.find(
@@ -273,6 +290,7 @@ const root = {
         rating,
         genres: show.genres,
         credits: { cast },
+        created_by: creators,
       };
     } catch (error) {
       console.error("Error fetching data from TMDB:", error);
