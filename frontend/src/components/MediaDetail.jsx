@@ -51,6 +51,10 @@ function MediaDetail() {
         backdrop_path
         poster_path
         rating
+        created_by {
+          id
+          name
+        }
         genres {
           id
           name
