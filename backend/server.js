@@ -76,6 +76,7 @@ const schema = buildSchema(`
   type KnownFor {
     id: Int
     title: String
+    media_type: String
   }
 
   type Genre {
@@ -142,6 +143,7 @@ const root = {
           ? result.known_for.map((item) => ({
               id: item.id,
               title: item.title || item.name,
+              media_type: item.media_type,
             }))
           : [],
       }));
