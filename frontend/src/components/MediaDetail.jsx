@@ -146,22 +146,29 @@ function MediaDetail() {
     const crew = mediaData.credits.crew;
     console.log(crew);
 
-    const directors = crew.Director.filter(
-      (member) => member.role === "Director",
-    );
+    //Remove duplicates by using a Map to filter by unique `id`
+    const uniqueDirectors = crew.Director
+      ? Array.from(
+          new Map(crew.Director.map((member) => [member.id, member])).values(),
+        ).filter((member) => member.role === "Director")
+      : [];
 
-    const writers = crew.Writer.filter((member) => member.role === "Writer");
+    const uniqueWriters = crew.Writer
+      ? Array.from(
+          new Map(crew.Writer.map((member) => [member.id, member])).values(),
+        ).filter((member) => member.role === "Writer")
+      : [];
 
     return (
       <div>
         <ul className="">
-          {directors.length > 0 && (
+          {uniqueDirectors.length > 0 && (
             <li>
               <span className="font-bold">
-                Director{directors.length > 1 ? "s" : ""}:{" "}
+                Director{uniqueDirectors.length > 1 ? "s" : ""}:{" "}
               </span>
               <ul className="inline p-2">
-                {directors.map((director) => (
+                {uniqueDirectors.map((director) => (
                   <li className="inline" key={director.id}>
                     {director.name}
                   </li>
@@ -169,13 +176,13 @@ function MediaDetail() {
               </ul>
             </li>
           )}
-          {writers.length > 0 && (
+          {uniqueWriters.length > 0 && (
             <li>
               <span className="font-bold">
-                Writer{writers.length > 1 ? "s" : ""}:{" "}
+                Writer{uniqueWriters.length > 1 ? "s" : ""}:{" "}
               </span>
               <ul className="inline p-2">
-                {writers.map((writer) => (
+                {uniqueWriters.map((writer) => (
                   <li className="inline p-1" key={writer.id}>
                     {writer.name}
                   </li>
@@ -187,6 +194,7 @@ function MediaDetail() {
       </div>
     );
   };
+  
 
   const displayCreators = (mediaData) => {
     const creators = mediaData.created_by || []; // Ensure creators is defined
