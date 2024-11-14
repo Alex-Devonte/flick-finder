@@ -27,11 +27,28 @@ function ActorDetail() {
   });
 
   console.log(data);
+  const actor = data?.actor;
 
   if (loading) return <p>Loading . . .</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  return <p>Viewing detail for: {id}</p>;
+  return (
+    <>
+      <p>Viewing detail for: {id}</p>
+      <p>{actor.name}</p>
+      <p>{actor.gender === 1 ? "Male" : "Female"}</p>
+
+      <p>{actor.place_of_birth}</p>
+      <img
+        src={
+          actor.profile_path
+            ? `${import.meta.env.VITE_IMAGE_BASE_URL}w500${actor.profile_path}`
+            : import.meta.env.VITE_PLACEHOLDER_URL
+        }
+        alt={`${actor.name} Photo`}
+      />
+    </>
+  );
 }
 
 export default ActorDetail;
