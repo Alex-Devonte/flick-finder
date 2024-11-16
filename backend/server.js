@@ -338,12 +338,10 @@ const app = express();
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
-    methods: "GET,POST,OPTIONS",
-    allowedHeaders: "Content-Type",
+    methods: "GET, POST, OPTIONS",
+    allowedHeaders: "Content-Type, Authorization",
   })
 );
-
-app.options("/graphql", cors()); // Handle preflight OPTIONS requests
 
 
 // Create and use the GraphQL handler.
