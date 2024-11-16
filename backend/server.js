@@ -343,6 +343,9 @@ app.use(
   })
 );
 
+app.options("/graphql", cors()); // Handle preflight OPTIONS requests
+
+
 // Create and use the GraphQL handler.
 app.all(
   "/graphql",
