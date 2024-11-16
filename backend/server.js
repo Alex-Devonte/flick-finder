@@ -337,6 +337,9 @@ const root = {
 const app = express();
 app.use(cors({ origin: process.env.FRONTEND_URL }));
 
+app.options("/graphql", cors());
+
+
 // Create and use the GraphQL handler.
 app.all(
   "/graphql",
