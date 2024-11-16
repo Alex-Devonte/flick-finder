@@ -335,11 +335,17 @@ const root = {
 };
 
 const app = express();
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    methods: "GET,POST,OPTIONS",
+    allowedHeaders: "Content-Type",
+  })
+);
 
 // Create and use the GraphQL handler.
 app.all(
   "/graphql",
-  cors({ origin: process.env.FRONTEND_URL }),
   createHandler({
     schema: schema,
     rootValue: root,
