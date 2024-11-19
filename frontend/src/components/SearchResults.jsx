@@ -116,7 +116,7 @@ function SearchResults() {
                     <img
                       src={
                         person.profile_path
-                          ? `${import.meta.env.VITE_IMAGE_BASE_URL}${person.profile_path}`
+                          ? `${import.meta.env.VITE_IMAGE_BASE_URL}w185${person.profile_path}`
                           : import.meta.env.VITE_PLACEHOLDER_URL
                       }
                       alt={`${person.name} Photo`}
