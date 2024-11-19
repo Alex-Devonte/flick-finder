@@ -335,7 +335,16 @@ const root = {
 };
 
 const app = express();
-app.use(cors());
+console.log("Frontend URL:", process.env.FRONTEND_URL);
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+  })
+);
+
+
+
 
 // Create and use the GraphQL handler.
 app.all(
@@ -353,5 +362,9 @@ app.get("/", (_req, res) => {
 });
 
 // Start the server at port
-app.listen(4000);
-console.log("Running a GraphQL API server at http://localhost:4000/graphql");
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(
+    `Running a GraphQL API server at http://localhost:${PORT}/graphql`
+  );
+});
