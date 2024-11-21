@@ -1,15 +1,15 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import App from "./App";
 import Homepage from "./components/Homepage";
 import SearchResults from "./components/SearchResults";
 import MediaDetail from "./components/MediaDetail";
 import ActorDetail from "./components/ActorDetail";
+import Layout from "./components/Layout";
 
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<App />}>
+        <Route path="/" element={<Layout />}>
           <Route index element={<Homepage />} />
           <Route path="results" element={<SearchResults />} />
           <Route path="/details/media/:id" element={<MediaDetail />} />
