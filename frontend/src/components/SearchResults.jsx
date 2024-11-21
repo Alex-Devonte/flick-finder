@@ -80,7 +80,7 @@ function SearchResults() {
   console.log(groupedResults);
 
   return (
-    <div>
+    <div className="flex-grow bg-pink-50">
       {(groupedResults.movie || groupedResults.tv) && (
         <div>
           <h1 className="mb-6 text-7xl">Movies & TV</h1>

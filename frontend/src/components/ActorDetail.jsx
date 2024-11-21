@@ -33,7 +33,7 @@ function ActorDetail() {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <>
+    <div className="flex-grow bg-pink-50">
       <p>Viewing detail for: {id}</p>
       <p>{actor.name}</p>
       <p>{actor.gender === 1 ? "Male" : "Female"}</p>
@@ -47,7 +47,7 @@ function ActorDetail() {
         }
         alt={`${actor.name} Photo`}
       />
-    </>
+    </div>
   );
 }
 
