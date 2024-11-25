@@ -1,7 +1,7 @@
 function Footer() {
   return (
-    <div className="bg-black p-5">
-      <p className="text-cream">Created by Alex Taylor 2024</p>
+    <div className="z-10 bg-black p-5 text-center">
+      <p className="text-dark-cream">Created by Alex Taylor 2024</p>
     </div>
   );
 }
