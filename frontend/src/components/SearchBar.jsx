@@ -10,6 +10,13 @@ function SearchBar() {
   const handleChange = (e) => {
     setQuery(e.target.value);
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   const handleSearch = () => {
     if (query.trim()) {
       navigate(`/results?query=${encodeURIComponent(query)}`);
@@ -24,6 +31,7 @@ function SearchBar() {
         className="flex-1 rounded-l-lg border-none p-3 text-charcoal outline-none"
         value={query}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
       />
       <button
         type="button"
