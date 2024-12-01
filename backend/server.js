@@ -25,6 +25,7 @@ const schema = buildSchema(`
     profile_path: String
     media_type: String
     release_date: String
+    first_air_date: String
     overview: String
     known_for: [KnownFor]
   }
@@ -137,7 +138,8 @@ const root = {
         poster_path: result.poster_path,
         profile_path: result.profile_path,
         media_type: result.media_type,
-        release_date: result.release_date,
+        release_date: result.release_date, //Movies
+        first_air_date: result.first_air_date, //TV
         overview: result.overview,
         known_for: result.known_for //Only retrieve id & title from array if available
           ? result.known_for.map((item) => ({
