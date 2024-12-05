@@ -20,7 +20,7 @@ function SearchResults() {
                 : import.meta.env.VITE_PLACEHOLDER_URL
             }
             alt={`${result.title || result.name} Poster`}
-            className="min-h-[277.5px] rounded-[15px] md:h-[340px]"
+            className="h-[280px] rounded-[15px] md:h-[340px] lg:h-[500px]"
           />
         </Link>
       </div>
@@ -82,17 +82,17 @@ function SearchResults() {
   console.log(groupedResults);
 
   return (
-    <div className="flex-grow p-5 text-charcoal">
+    <div className="flex-grow text-charcoal">
       {(groupedResults.movie || groupedResults.tv) && (
         <div>
-          <h1 className="mb-14 text-6xl font-bold text-charcoal">
+          <h1 className="mb-14 p-5 text-6xl font-bold text-charcoal">
             Movies & TV
           </h1>
-          <ul className="grid grid-cols-2 items-start gap-5 md:grid-cols-3 lg:grid-cols-5">
+          <ul className="grid grid-cols-2 items-start gap-3 p-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-0 xl:grid-cols-7">
             {(groupedResults.movie || []).map((result) => (
               <li
                 key={result.id}
-                className="flex items-center pb-5 md:flex-col md:justify-center"
+                className="flex items-center pb-5 md:flex-col md:justify-center lg:items-start lg:gap-0 lg:p-5"
               >
                 <MediaResult result={result} />
               </li>
@@ -100,7 +100,7 @@ function SearchResults() {
             {(groupedResults.tv || []).map((result) => (
               <li
                 key={result.id}
-                className="flex items-center pb-5 md:flex-col md:justify-center"
+                className="flex items-center pb-5 md:flex-col md:justify-center lg:items-start lg:gap-0 lg:p-5"
               >
                 <MediaResult result={result} />
               </li>
@@ -111,11 +111,11 @@ function SearchResults() {
 
       {groupedResults.person && (
         <div className="my-10">
-          <h1 className="mb-14 text-6xl font-bold text-charcoal">People</h1>
-          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <h1 className="mb-14 p-5 text-6xl font-bold text-charcoal">People</h1>
+          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {groupedResults.person.map((person) => (
               <li key={person.id}>
-                <div className="flex w-full items-center gap-10 p-3 pb-0 md:h-44 md:gap-4 lg:justify-evenly">
+                <div className="flex w-full items-center gap-10 p-3 pb-0 md:h-44 md:gap-4 lg:justify-start lg:p-5">
                   <Link to={`/details/people/${person.id}`}>
                     <img
                       src={
