@@ -20,7 +20,7 @@ function SearchResults() {
                 : import.meta.env.VITE_PLACEHOLDER_URL
             }
             alt={`${result.title || result.name} Poster`}
-            className="min-h-[277.5px] rounded-[15px]"
+            className="min-h-[277.5px] rounded-[15px] md:h-[340px]"
           />
         </Link>
       </div>
