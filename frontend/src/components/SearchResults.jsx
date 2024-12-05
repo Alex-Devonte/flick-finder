@@ -7,8 +7,8 @@ function SearchResults() {
   const query = searchParams.get("query");
 
   const MediaResult = ({ result }) => (
-    <div className="flex w-full rounded-md border-2">
-      <div className="h-48 flex-shrink-0">
+    <div className="flex flex-col">
+      <div className="">
         <Link
           to={`/details/media/${result.id}`}
           state={{ mediaType: result.media_type }}
@@ -20,22 +20,23 @@ function SearchResults() {
                 : import.meta.env.VITE_PLACEHOLDER_URL
             }
             alt={`${result.title || result.name} Poster`}
-            className="h-full w-32 rounded-bl-md rounded-tl-md border-r-4 object-cover lg:mr-5"
+            className="min-h-[277.5px] rounded-[15px]"
           />
         </Link>
       </div>
-      <div className="flex flex-col justify-center p-3 text-left">
+      <div className="flex flex-col justify-center p-2 text-left">
         <Link
           className="font-bold"
           to={`/details/media/${result.id}`}
           state={{ mediaType: result.media_type }}
         >
           {result.name || result.title}
+          <p className="mb-4 text-left font-normal italic">
+            {result.release_date
+              ? result.release_date.slice(0, 4)
+              : result.first_air_date?.slice(0, 4)}
+          </p>
         </Link>
-        <p className="mb-4 text-left text-sm italic">{result.release_date}</p>
-        <p className="line-clamp-2 text-sm lg:line-clamp-3">
-          {result.overview}
-        </p>
       </div>
     </div>
   );
@@ -50,6 +51,7 @@ function SearchResults() {
         profile_path
         media_type
         release_date
+        first_air_date
         overview
         known_for {
           id
@@ -80,15 +82,17 @@ function SearchResults() {
   console.log(groupedResults);
 
   return (
-    <div className="flex-grow bg-pink-50">
+    <div className="flex-grow p-5 text-charcoal">
       {(groupedResults.movie || groupedResults.tv) && (
         <div>
-          <h1 className="mb-6 text-7xl">Movies & TV</h1>
-          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <h1 className="mb-14 text-6xl font-bold text-charcoal">
+            Movies & TV
+          </h1>
+          <ul className="grid grid-cols-2 items-start gap-5 md:grid-cols-3 lg:grid-cols-5">
             {(groupedResults.movie || []).map((result) => (
               <li
                 key={result.id}
-                className="flex items-center border-b p-4 md:flex-col md:justify-center"
+                className="flex items-center pb-5 md:flex-col md:justify-center"
               >
                 <MediaResult result={result} />
               </li>
@@ -96,7 +100,7 @@ function SearchResults() {
             {(groupedResults.tv || []).map((result) => (
               <li
                 key={result.id}
-                className="flex items-center border-b p-4 md:flex-col md:justify-center"
+                className="flex items-center pb-5 md:flex-col md:justify-center"
               >
                 <MediaResult result={result} />
               </li>
@@ -106,12 +110,12 @@ function SearchResults() {
       )}
 
       {groupedResults.person && (
-        <div className="p-2">
-          <h1 className="mb-6 text-7xl">People</h1>
+        <div className="my-10">
+          <h1 className="mb-14 text-6xl font-bold text-charcoal">People</h1>
           <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {groupedResults.person.map((person) => (
               <li key={person.id}>
-                <div className="flex w-full items-center gap-10 rounded-md border-2 p-5 md:h-44 md:gap-4 lg:justify-evenly">
+                <div className="flex w-full items-center gap-10 p-3 pb-0 md:h-44 md:gap-4 lg:justify-evenly">
                   <Link to={`/details/people/${person.id}`}>
                     <img
                       src={
