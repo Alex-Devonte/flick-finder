@@ -285,9 +285,9 @@ function MediaDetail() {
             <Link
               key={cast.id}
               to={`/details/people/${cast.id}`}
-              className="flex-shrink-0"
+              className="w-[165px] flex-shrink-0"
             >
-              <div>
+              <div className="">
                 <img
                   className="mb-1"
                   src={`${import.meta.env.VITE_IMAGE_BASE_URL}w154${cast.profile_path}`}
