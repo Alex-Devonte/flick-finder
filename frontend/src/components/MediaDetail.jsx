@@ -160,11 +160,11 @@ function MediaDetail() {
       : [];
 
     return (
-      <div>
+      <div className="mt-8">
         <ul className="">
           {uniqueDirectors.length > 0 && (
             <li>
-              <span className="font-bold">
+              <span className="text-xl font-bold">
                 Director{uniqueDirectors.length > 1 ? "s" : ""}:{" "}
               </span>
               <ul className="inline p-2">
@@ -194,7 +194,6 @@ function MediaDetail() {
       </div>
     );
   };
-  
 
   const displayCreators = (mediaData) => {
     const creators = mediaData.created_by || []; // Ensure creators is defined
@@ -241,19 +240,31 @@ function MediaDetail() {
         </div>
 
         <div className="p-5 lg:w-2/3">
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-4xl font-bold">
             {mediaData.title}
             <span> ({mediaData.release_date.slice(0, 4)})</span>
           </h1>
-          <p className="border">{mediaData.rating}</p>
-          <p>{convertRuntime(mediaData.runtime)}</p>
-          <ul>
+          {mediaData.rating ? (
+            <p className="mb-2 border-b">{mediaData.rating}</p>
+          ) : mediaData.runtime ? (
+            <p className="mb-2 border-b">{convertRuntime(mediaData.runtime)}</p>
+          ) : null}
+
+          <ul className="flex flex-wrap gap-2">
             {mediaData.genres.map((genre) => (
-              <li key={genre.id}>{genre.name}</li>
+              <li
+                key={genre.id}
+                className="inline-block rounded-xl border-4 border-cream p-1"
+              >
+                {genre.name}
+              </li>
             ))}
           </ul>
+
           <p className="text-black">{mediaData.tagline}</p>
+          <h3 className="mb-2 mt-5 text-2xl font-bold">Overview</h3>
           <p className="text-left text-lg text-black">{mediaData.overview}</p>
+
           {/* Render Creators if present */}
           {mediaData?.created_by && <>{displayCreators(mediaData)}</>}
           {mediaData?.credits?.crew && (
@@ -267,16 +278,16 @@ function MediaDetail() {
 
       {/* Cast */}
       <div className="relative z-20 m-2 bg-white p-4">
-        <h2 className="text-xl font-semibold">Top Billed Cast</h2>
-        <div className="flex gap-10 overflow-x-scroll">
+        <h2 className="mb-2 text-2xl font-bold">Top Billed Cast</h2>
+        <div className="scrollbar-visible flex gap-10 overflow-x-scroll">
           {mediaData.credits.cast.map((cast) => (
-            <div key={cast.id}>
+            <div key={cast.id} className="flex-shrink-0">
               <img
-                className="h-60 w-60"
-                src={`${import.meta.env.VITE_IMAGE_BASE_URL}original${cast.profile_path}`}
+                className="mb-1"
+                src={`${import.meta.env.VITE_IMAGE_BASE_URL}w154${cast.profile_path}`}
               />
-              <p>{cast.name}</p>
-              <p>{cast.character}</p>
+              <p className="mb-3">{cast.name}</p>
+              <p className="mb-3">{cast.character}</p>
             </div>
           ))}
         </div>
