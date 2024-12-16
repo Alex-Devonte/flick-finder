@@ -1,5 +1,6 @@
 import { useParams, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
+import { Link } from "react-router-dom";
 
 function MediaDetail() {
   //Extract movie/show id from the URL
@@ -281,14 +282,20 @@ function MediaDetail() {
         <h2 className="mb-2 text-2xl font-bold">Top Billed Cast</h2>
         <div className="scrollbar-visible flex gap-10 overflow-x-scroll">
           {mediaData.credits.cast.map((cast) => (
-            <div key={cast.id} className="flex-shrink-0">
-              <img
-                className="mb-1"
-                src={`${import.meta.env.VITE_IMAGE_BASE_URL}w154${cast.profile_path}`}
-              />
-              <p className="mb-3">{cast.name}</p>
-              <p className="mb-3">{cast.character}</p>
-            </div>
+            <Link
+              key={cast.id}
+              to={`/details/people/${cast.id}`}
+              className="flex-shrink-0"
+            >
+              <div>
+                <img
+                  className="mb-1"
+                  src={`${import.meta.env.VITE_IMAGE_BASE_URL}w154${cast.profile_path}`}
+                />
+                <p className="mb-3">{cast.name}</p>
+                <p className="mb-3">{cast.character}</p>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
