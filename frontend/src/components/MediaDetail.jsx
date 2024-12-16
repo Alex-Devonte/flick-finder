@@ -292,8 +292,8 @@ function MediaDetail() {
                   className="mb-1"
                   src={`${import.meta.env.VITE_IMAGE_BASE_URL}w154${cast.profile_path}`}
                 />
-                <p className="mb-3">{cast.name}</p>
-                <p className="mb-3">{cast.character}</p>
+                <p className="font-semibold">{cast.name}</p>
+                <p className="mb-3 font-light">{cast.roles?.[0]?.character}</p>
               </div>
             </Link>
           ))}
