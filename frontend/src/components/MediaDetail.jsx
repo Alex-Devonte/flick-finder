@@ -170,7 +170,7 @@ function MediaDetail() {
               </span>
               <ul className="inline p-2">
                 {uniqueDirectors.map((director) => (
-                  <li className="inline" key={director.id}>
+                  <li className="inline font-semibold" key={director.id}>
                     {director.name}
                   </li>
                 ))}
@@ -179,12 +179,12 @@ function MediaDetail() {
           )}
           {uniqueWriters.length > 0 && (
             <li>
-              <span className="font-bold">
+              <span className="text-xl font-bold">
                 Writer{uniqueWriters.length > 1 ? "s" : ""}:{" "}
               </span>
               <ul className="inline p-2">
                 {uniqueWriters.map((writer) => (
-                  <li className="inline p-1" key={writer.id}>
+                  <li className="inline p-1 font-semibold" key={writer.id}>
                     {writer.name}
                   </li>
                 ))}
@@ -206,7 +206,7 @@ function MediaDetail() {
             <p>Creators: </p>
             <ul className="inline p-2">
               {creators.map((creator) => (
-                <li className="inline p-1" key={creator.id}>
+                <li className="inline p-1 font-semibold" key={creator.id}>
                   {creator.name}
                 </li>
               ))}
@@ -241,13 +241,20 @@ function MediaDetail() {
         </div>
 
         <div className="p-5 lg:w-2/3">
-          <h1 className="text-4xl font-bold">
+          <h1 className="pb-3 text-4xl font-bold">
             {mediaData.title}
-            <span> ({mediaData.release_date.slice(0, 4)})</span>
+            <span className="font-normal">
+              {" "}
+              ({mediaData.release_date.slice(0, 4)})
+            </span>
           </h1>
           {console.log(mediaData.runtime)}
-          <div className="mb-2 flex border-b">
-            {mediaData.rating && <p className="mr-4">{mediaData.rating}</p>}
+          <div className="mb-2 flex items-center border-b p-1">
+            <p className="border-2 p-1 font-bold">
+              {mediaData.rating ? mediaData.rating : "N/A"}
+            </p>
+
+            <span className="mx-2">•</span>
 
             {mediaData.runtime && <p>{convertRuntime(mediaData.runtime)}</p>}
           </div>
@@ -256,14 +263,14 @@ function MediaDetail() {
             {mediaData.genres.map((genre) => (
               <li
                 key={genre.id}
-                className="inline-block rounded-xl border-4 border-cream p-1"
+                className="inline-block rounded-xl border-2 border-dark-red bg-cream p-2 font-semibold text-charcoal"
               >
                 {genre.name}
               </li>
             ))}
           </ul>
 
-          <p className="text-black">{mediaData.tagline}</p>
+          <p className="mt-4 italic text-black">{mediaData.tagline}</p>
           <h3 className="mb-2 mt-5 text-2xl font-bold">Overview</h3>
           <p className="text-left text-lg text-black">{mediaData.overview}</p>
 
