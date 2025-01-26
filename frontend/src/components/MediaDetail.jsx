@@ -245,11 +245,12 @@ function MediaDetail() {
             {mediaData.title}
             <span> ({mediaData.release_date.slice(0, 4)})</span>
           </h1>
-          {mediaData.rating ? (
-            <p className="mb-2 border-b">{mediaData.rating}</p>
-          ) : mediaData.runtime ? (
-            <p className="mb-2 border-b">{convertRuntime(mediaData.runtime)}</p>
-          ) : null}
+          {console.log(mediaData.runtime)}
+          <div className="mb-2 flex border-b">
+            {mediaData.rating && <p className="mr-4">{mediaData.rating}</p>}
+
+            {mediaData.runtime && <p>{convertRuntime(mediaData.runtime)}</p>}
+          </div>
 
           <ul className="flex flex-wrap gap-2">
             {mediaData.genres.map((genre) => (
