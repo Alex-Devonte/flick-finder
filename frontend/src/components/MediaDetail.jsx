@@ -231,7 +231,7 @@ function MediaDetail() {
       ></div>
 
       {/* Poster & Movie Details */}
-      <div className="relative z-10 flex flex-col lg:h-[700px] lg:flex-row">
+      <div className="relative z-10 flex flex-col lg:h-[700px] lg:flex-row lg:text-white">
         <div className="h-[300px] p-3 lg:h-full lg:w-1/3">
           <img
             className="h-full w-full object-contain"
@@ -254,7 +254,9 @@ function MediaDetail() {
               {mediaData.rating ? mediaData.rating : "N/A"}
             </p>
 
-            <span className="mx-2">•</span>
+            {mediaData.rating && mediaData.runtime && (
+              <span className="mx-2">•</span>
+            )}
 
             {mediaData.runtime && <p>{convertRuntime(mediaData.runtime)}</p>}
           </div>
@@ -270,9 +272,9 @@ function MediaDetail() {
             ))}
           </ul>
 
-          <p className="mt-4 italic text-black">{mediaData.tagline}</p>
+          <p className="mt-4 italic">{mediaData.tagline}</p>
           <h3 className="mb-2 mt-5 text-2xl font-bold">Overview</h3>
-          <p className="text-left text-lg text-black">{mediaData.overview}</p>
+          <p className="text-left text-lg">{mediaData.overview}</p>
 
           {/* Render Creators if present */}
           {mediaData?.created_by && <>{displayCreators(mediaData)}</>}
@@ -288,7 +290,7 @@ function MediaDetail() {
       {/* Cast */}
       <div className="relative z-20 m-2 bg-white p-4">
         <h2 className="mb-2 text-2xl font-bold">Top Billed Cast</h2>
-        <div className="scrollbar-visible flex gap-10 overflow-x-scroll">
+        <div className="flex gap-10 overflow-auto">
           {mediaData.credits.cast.map((cast) => (
             <Link
               key={cast.id}
