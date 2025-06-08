@@ -2,7 +2,7 @@ import SearchBar from "./SearchBar";
 
 function Homepage() {
   return (
-    <div className="flex flex-grow flex-col bg-pink-50 bg-[url(cinemabackdrop.jpg)] bg-cover bg-center p-5">
+    <div className="flex flex-grow flex-col bg-pink-50 bg-[url(/cinemabackdrop.jpg)] bg-cover bg-center p-5">
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-90"></div>
 
